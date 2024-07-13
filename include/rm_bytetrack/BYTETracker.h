@@ -7,7 +7,6 @@
 
 #include "rm_bytetrack/STrack.h"
 #include "rm_bytetrack/dataType.h"
-#include "rm_msgs/RadarTargetObject.h"
 #include "rm_bytetrack/lapjv.h"
 #include "types.h"
 
@@ -35,10 +34,10 @@ private:
                          float thresh, std::vector<std::vector<int> >& matches, std::vector<int>& unmatched_a,
                          std::vector<int>& unmatched_b);
   static std::vector<std::vector<float> > iou_distance(std::vector<STrack*>& atracks, std::vector<STrack>& btracks,
-                                                       int& dist_size, int& dist_size_size);
+                                                      int& dist_size, int& dist_size_size);
   static std::vector<std::vector<float> > iou_distance(std::vector<STrack>& atracks, std::vector<STrack>& btracks);
   static std::vector<std::vector<float> > ious(std::vector<std::vector<float> >& atlbrs,
-                                               std::vector<std::vector<float> >& btlbrs);
+                                              std::vector<std::vector<float> >& btlbrs);
 
   static double lapjv(const std::vector<std::vector<float> >& cost, std::vector<int>& rowsol, std::vector<int>& colsol,
                       bool extend_cost = false, float cost_limit = LONG_MAX, bool return_cost = true);

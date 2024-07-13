@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 project(rm_detector)
 
-if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  set(CMAKE_CUDA_ARCHITECTURES 70 75 80)
-endif(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+if (NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+    set(CMAKE_CUDA_ARCHITECTURES 70 75 80)
+endif (NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
 
 add_definitions(-std=c++11)
 add_definitions(-DAPI_EXPORTS)
@@ -11,7 +11,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug)
 
 # CUDA
-set(CUDA_VERSION "11.6")
 option(CUDA_USE_STATIC_CUDA_RUNTIME OFF)
 set(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
 enable_language(CUDA)
@@ -25,8 +24,9 @@ find_package(catkin REQUIRED COMPONENTS
         nodelet
         pluginlib
         rm_msgs
-        )
+)
 #find_package(OpenCV REQUIRED)
+#find_package(OpenCV 4 REQUIRED)
 find_package(OpenCV 4 REQUIRED)
 
 include_directories(/usr/local/cuda/include)
@@ -37,8 +37,8 @@ link_directories(/usr/local/cuda/lib64)
 set(TensorRT_VERSION "8.4.0.6")
 
 if (NOT EXISTS "/home/ywj/opt/TensorRT-${TensorRT_VERSION}")
-  MESSAGE(WARNING "/home/ywj/opt/TensorRT-${TensorRT_VERSION} not found.")
-endif()
+    MESSAGE(WARNING "/home/ywj/opt/TensorRT-${TensorRT_VERSION} not found.")
+endif ()
 
 include_directories("/home/ywj/opt/TensorRT-${TensorRT_VERSION}/include/")
 
@@ -55,7 +55,7 @@ add_library(TRTx SHARED ${SRCS})
 target_link_libraries(network
         nvinfer
         cudart
-        )
+)
 
 target_link_libraries(TRTx network)
 
@@ -83,17 +83,18 @@ catkin_package(
         dynamic_reconfigure
         std_msgs
         cv_bridge
+        rm_msgs
         LIBRARIES ${PROJECT_NAME}
 )
 
-if (NOT EXISTS "/usr/local/cuda-${CUDA_VERSION}/include")
-  MESSAGE(WARNING "/usr/local/cuda-${CUDA_VERSION}/include not found.")
-endif()
+if (NOT EXISTS "/usr/local/cuda/include")
+    MESSAGE(WARNING "/usr/local/cuda/include not found.")
+endif ()
 
 include_directories(
         include
         ${catkin_INCLUDE_DIRS}
-        "/usr/local/cuda-${CUDA_VERSION}/include"
+        "/usr/local/cuda/include"
         /usr/include/eigen3
 )
 
@@ -105,16 +106,6 @@ add_library(${PROJECT_NAME}
         src/rm_bytetrack/lapjv.cpp
         src/rm_bytetrack/STrack.cpp
 )
-
-add_executable(get_engine src/get_engine.cpp)
-
-target_link_libraries(get_engine
-        nvinfer
-        cudart
-        network
-        TRTx
-        ${OpenCV_LIBS}
-        )
 
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
@@ -128,7 +119,7 @@ target_link_libraries(${PROJECT_NAME}
         cudart
         network
         TRTx
-        )
+)
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 

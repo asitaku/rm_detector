@@ -15,7 +15,7 @@
 #include "rm_msgs/RadarTargetDetectionArray.h"
 #include <dynamic_reconfigure/server.h>
 #include "rm_detector/dynamicConfig.h"
-#include <sensor_msgs/CameraInfo.h>
+#include <sensor_msgs/CompressedImage.h>
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 #include "rm_detector/inferencer.h"
@@ -61,7 +61,7 @@ public:
   std::string roi_data6_name_;  // sentry
   std::string roi_data7_name_;  // our sentry
 
-  bool target_is_blue_;
+  bool target_is_red_;
   bool left_camera_;
 
   Inferencer car_inferencer_;
